@@ -60,32 +60,32 @@ const data = [89, 30, 25, 32, 72, 70, 51, 42, 25, 24, 53, 55, 78, 50, 13, 40, 48
 //let dataArray = data.split(' ');
 
 function quickSort(array, start = 0, end = array.length){
-    if(start >= end){
-        return array
-    }
-    const middle = partition(array, start, end);
-    array = quickSort(array, start, middle);
-    array = quickSort(array, middle + 1, end);
-    return array;
+  if(start >= end){
+    return array
+  }
+  const middle = partition(array, start, end);
+  array = quickSort(array, start, middle);
+  array = quickSort(array, middle + 1, end);
+  return array;
 }
 
 function partition(array, start, end){
-    const pivot = array[end - 1];
-    let j = start;
-    for(let i = start; i < end - 1; i++){
-        if(array[i] <= pivot){
-            swap(array, i, j);
-            j++;
-        }
+  const pivot = array[end - 1];
+  let j = start;
+  for(let i = start; i < end - 1; i++){
+    if(array[i] <= pivot){
+      swap(array, i, j);
+      j++;
     }
-    swap(array, end - 1, j);
-    return j; 
+  }
+  swap(array, end - 1, j);
+  return j; 
 }
 
 function swap(array, i, j){
-    const temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+  const temp = array[i];
+  array[i] = array[j];
+  array[j] = temp;
 };
 
 //console.log(quickSort(data));
@@ -93,36 +93,106 @@ function swap(array, i, j){
 
 //Q4: implementing merge sort
 function mSort(array){
-    if(array.length <= 1){
-        return array;
-    }
-    const middle = Math.floor(array.length / 2);
-    let left = array.slice(0, middle);
-    let right = array.slice(middle, array.length);
+  if(array.length <= 1){
+    return array;
+  }
+  const middle = Math.floor(array.length / 2);
+  let left = array.slice(0, middle);
+  let right = array.slice(middle, array.length);
 
-    left = mSort(left);
-    right = mSort(right);
-    return merge(left, right, array);
+  left = mSort(left);
+  right = mSort(right);
+  return merge(left, right, array);
 }
 
 function merge(left, right, array){
-    let leftIndex = 0;
-    let rightIndex = 0;
-    let outputIndex = 0;
-    while(leftIndex < left.length && rightIndex < right.length){
-        if(left[leftIndex] < right[rightIndex]){
-            array[outputIndex++] = left[leftIndex++];
-        }
-        else{
-            array[outputIndex++] = right[rightIndex++];
-        }
+  let leftIndex = 0;
+  let rightIndex = 0;
+  let outputIndex = 0;
+  while(leftIndex < left.length && rightIndex < right.length){
+    if(left[leftIndex] < right[rightIndex]){
+      array[outputIndex++] = left[leftIndex++];
     }
-    for(let i = leftIndex; i < left.length; i++){
-        array[outputIndex++] = left[i];
+    else{
+      array[outputIndex++] = right[rightIndex++];
     }
-    for(let i = rightIndex; i < right.length; i++){
-        array[outputIndex++] = right[i];
-    }
-    return array; 
+  }
+  for(let i = leftIndex; i < left.length; i++){
+    array[outputIndex++] = left[i];
+  }
+  for(let i = rightIndex; i < right.length; i++){
+    array[outputIndex++] = right[i];
+  }
+  return array; 
 }
 //console.log(mSort(data));
+
+
+
+
+
+function mLinkedListSort(ll){
+  if(ll.head.next == null){
+    return ll;
+  }
+  let currNode = ll.head;
+  let count = 0;
+  while (currNode != null) {
+    count++;
+    currNode = currNode.next;
+  }
+  const middle = Math.floor(count / 2);
+  let leftList = new LinkedList();
+  let rightList = new LinkedList();
+  currNode = ll.head;
+  for (let i=0;i<middle;i++) {
+    leftList.insertLast(currNode.value);
+    currNode = currNode.next;
+  }
+  while (currNode != null) {
+    rightList.insertLast(currNode.value);
+    currNode = currNode.next;
+  }
+
+  leftList = mLinkedListSort(leftList);
+  rightList = mLinkedListSort(rightList);
+  return mergeLinkedList(leftList, rightList);
+}
+  
+
+function mergeLinkedList(leftList, rightList){
+  let newAdditions = new LinkedList();
+  let leftNode = leftList.head;
+  let rightNode = rightList.head;
+  while(leftNode != null && rightNode != null){
+    if(leftNode.value < rightNode.value) {
+      newAdditions.insertLast(leftNode.value);
+      leftNode = leftNode.next;
+    }
+    else{
+      newAdditions.insertLast(rightNode.value);
+      rightNode = rightNode.next;
+    }
+  }
+  while (leftNode != null) {
+    newAdditions.insertLast(leftNode.value);
+    leftNode = leftNode.next;
+  }
+
+  while (rightNode != null) {
+    newAdditions.insertLast(rightNode.value);
+    rightNode = rightNode.next;
+  }
+  return newAdditions; 
+}
+
+
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+  }
+  
+
+let LinkedList = require('./linked-list');
+let listFive = new LinkedList();
+let unique = data.filter(onlyUnique);
+unique.forEach(dataItem => listFive.insertLast(dataItem));
