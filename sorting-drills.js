@@ -196,3 +196,28 @@ let LinkedList = require('./linked-list');
 let listFive = new LinkedList();
 let unique = data.filter(onlyUnique);
 unique.forEach(dataItem => listFive.insertLast(dataItem));
+
+
+let numbers = [8, 15, 11, 3, 9, 6, 7, 2, 4, ];
+let sort = [3, 5, 8, 15];
+let lowest = 3;
+let highest = 15;
+
+function bucketSort(numbers) {
+    sort.push(lowest);
+    sort.push(highest);
+
+
+    let count = sort.length;
+    let index1 = 0;
+    let index2 = 1;
+
+    for(let i=0;i<numbers.length;i++) {
+        let current = numbers[i];
+        if (numbers[i] < sort[index1]) {
+
+        }
+    }
+
+}
+bucketSort(numbers);
